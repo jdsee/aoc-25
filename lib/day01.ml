@@ -8,7 +8,7 @@ let split_pairs line =
   | [ lhs; rhs ] -> (Int.of_string lhs, Int.of_string rhs)
   | _ -> failwith "Unexpected input"
 
-let solve_part_one input =
+let solve_part_1 input =
   let ls, rs = input |> List.map ~f:split_pairs |> List.unzip in
   List.zip_exn
     (List.sort ~compare:Int.compare ls)
@@ -22,7 +22,7 @@ let group_by_count xs =
   List.iter xs ~f:(fun x -> Hashtbl.update counts x ~f:incr);
   counts
 
-let solve_part_two input =
+let solve_part_2 input =
   let ls, rs = input |> List.map ~f:split_pairs |> List.unzip in
   let counts = group_by_count rs in
   List.fold ls ~init:0 ~f:(fun acc x ->

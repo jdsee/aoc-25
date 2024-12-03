@@ -1,18 +1,43 @@
-open Aoc
+open! Aoc
 open Core
+open Cmdliner
+
+type params = { day : int [@doc "The Day to solve"] [@aka [ "d" ]] }
+[@@deriving cmdliner, show]
+
+module type Solution = sig
+  val solve_part_1 : string list -> int
+  val solve_part_2 : string list -> int
+end
+
+let solution_of_day = function
+  | 1 -> (module Day01 : Solution)
+  | day -> failwithf "Day %d is not implemented" day ()
+
+let solve day =
+  let module S = (val solution_of_day day) in
+  let test_data = In_channel.read_lines (Fmt.str "data/day0%d.test" day) in
+  let main_data = In_channel.read_lines (Fmt.str "data/day0%d.main" day) in
+  let test1 = S.solve_part_1 test_data in
+  let main1 = S.solve_part_1 main_data in
+  let test2 = S.solve_part_2 test_data in
+  let main2 = S.solve_part_2 main_data in
+  Fmt.pr "@.┌──────────────────────┐";
+  Fmt.pr "@.│         Day %d        │" day;
+  Fmt.pr "@.└──────────────────────┘@.";
+  Fmt.pr "@. TEST";
+  Fmt.pr "@.────────────────────────";
+  Fmt.pr "@.   Part I:  %d" test1;
+  Fmt.pr "@.   Part II: %d@." test2;
+  Fmt.pr "@. MAIN";
+  Fmt.pr "@.────────────────────────";
+  Fmt.pr "@.   Part I:  %d" main1;
+  Fmt.pr "@.   Part II: %d" main2;
+  Fmt.pr "@."
 
 let () =
-  let test_data = In_channel.read_lines "data/day01.test" in
-  let main_data = In_channel.read_lines "data/day01.main" in
-  let part_one_test = Day01.solve_part_one test_data in
-  let part_one_main = Day01.solve_part_one main_data in
-  let part_two_test = Day01.solve_part_two test_data in
-  let part_two_main = Day01.solve_part_two main_data in
-  Fmt.pr "@.--- DAY 01 ---@.";
-  Fmt.pr "@.# Part I";
-  Fmt.pr "@.test: %d" part_one_test;
-  Fmt.pr "@.main: %d" part_one_main;
-  Fmt.pr "@.# Part II";
-  Fmt.pr "@.test: %d" part_two_test;
-  Fmt.pr "@.main: %d" part_two_main;
-  Fmt.pr "@."
+  let f p = solve p.day in
+  let info = Cmd.info (Sys.get_argv ()).(0) in
+  let term = Term.(const f $ params_cmdliner_term ()) in
+  let cmd = Cmd.v info term in
+  exit (Cmd.eval cmd)

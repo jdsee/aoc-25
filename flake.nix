@@ -29,9 +29,11 @@
 
             buildInputs = with pkgs.ocamlPackages; [
               core
+              cmdliner
               fmt
               logs
               ppx_deriving
+              ppx_deriving_cmdliner
             ];
           };
         });
