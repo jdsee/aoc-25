@@ -10,8 +10,10 @@ module type Solution = sig
   val solve_part_2 : string list -> int
 end
 
-let solution_of_day = function
-  | 1 -> (module Day01 : Solution)
+let solution_of_day : int -> (module Solution) = function
+  | 1 -> (module Day01)
+  | 2 -> (module Day02)
+  | 8 -> (module Day08)
   | day -> failwithf "Day %d is not implemented" day ()
 
 let solve day =
