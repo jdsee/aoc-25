@@ -28,6 +28,7 @@
             strictDeps = true;
 
             buildInputs = with pkgs.ocamlPackages; [
+              angstrom
               core
               cmdliner
               fmt

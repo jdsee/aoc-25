@@ -13,19 +13,21 @@ end
 let solution_of_day : int -> (module Solution) = function
   | 1 -> (module Day01)
   | 2 -> (module Day02)
+  | 3 -> (module Day03)
   | 8 -> (module Day08)
+  | 19 -> (module Day19)
   | day -> failwithf "Day %d is not implemented" day ()
 
 let solve day =
   let module S = (val solution_of_day day) in
-  let test_data = In_channel.read_lines (Fmt.str "data/day0%d.test" day) in
-  let main_data = In_channel.read_lines (Fmt.str "data/day0%d.main" day) in
+  let test_data = In_channel.read_lines (Fmt.str "data/day%02d.test" day) in
+  let main_data = In_channel.read_lines (Fmt.str "data/day%02d.main" day) in
   let test1 = S.solve_part_1 test_data in
   let main1 = S.solve_part_1 main_data in
   let test2 = S.solve_part_2 test_data in
   let main2 = S.solve_part_2 main_data in
   Fmt.pr "@.┌──────────────────────┐";
-  Fmt.pr "@.│         Day %d        │" day;
+  Fmt.pr "@.│        Day %d        │" day;
   Fmt.pr "@.└──────────────────────┘@.";
   Fmt.pr "@. TEST";
   Fmt.pr "@.────────────────────────";

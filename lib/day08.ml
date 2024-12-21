@@ -12,6 +12,7 @@ let collect_antenna_positions input =
 
 module Antinode = struct
   type t = int * int
+  (** [t] is [(y, x)], where [y] is the row index and [x] is the column index. *)
 
   let make ~lim_y ~lim_x y x =
     if y < 0 || y > lim_y || x < 0 || x > lim_x then None else Some (y, x)
