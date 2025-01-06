@@ -16,6 +16,7 @@ let solution_of_day : int -> (module Solution) = function
   | 3 -> (module Day03)
   | 8 -> (module Day08)
   | 19 -> (module Day19)
+  | 21 -> (module Day21)
   | day -> failwithf "Day %d is not implemented" day ()
 
 let solve day =
